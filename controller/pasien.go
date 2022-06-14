@@ -7,20 +7,39 @@ import (
 )
 
 type post_pasien struct {
-	Nama           string `json:"nama"`
-	No_identitas   string `json:"no_identitas"`
-	Alamat         string `json:"alamat"`
-	Gender         string `json:"gender"`
-	No_hp          string `json:"no_hp"`
-	Tempat_lahir   string `json:"tempat_lahir"`
-	Tanggal_lahir  string `json:"tanggal_lahir"`
-	Id_rekam_medis int    `json:"id_rekam_medis"`
+	Nama           string `form:"nama"`
+	Nik            string `form:"nik"`
+	Alamat         string `form:"alamat"`
+	Jenis_kelamin  string `form:"jenis_kelamin"`
+	No_hp          string `form:"no_hp"`
+	Tempat_lahir   string `form:"tempat_lahir"`
+	Tanggal_lahir  string `form:"tanggal_lahir"`
+	Id_rekam_medis int    `form:"id_rekam_medis"`
+}
+
+type get_pasien struct {
+	Id            int    `form:"id"`
+	Nama          string `form:"nama"`
+	Nik           string `form:"nik"`
+	Alamat        string `form:"alamat"`
+	Jenis_kelamin string `form:"jenis_kelamin"`
+	Rekam_medis   interface{}
+}
+
+type rekam_medis struct {
+	Pemeriksaan      string `form:"pemeriksaan"`
+	Jenis_penanganan string `form:"jenis_penanganan"`
 }
 
 func Get_pasien(c *gin.Context) {
 	db := c.MustGet("db").(*gorm.DB)
-	var get_pasien []model.Pasien
-	db.Find(&get_pasien)
+	var get_pasien []get_pasien
+	db.Raw("SELECT id, nama, nik, alamat, jenis_kelamin FROM capstone.pasiens;").Scan(&get_pasien)
+	for i := 0; i < len(get_pasien); i++ {
+		var rekam_medis rekam_medis
+		db.Where("id_pasien = ?", get_pasien[i].Id).Find(&rekam_medis)
+		db.Model(&get_pasien[i]).Update("Rekam_medis", rekam_medis)
+	}
 	c.JSON(200, gin.H{
 		"data":   get_pasien,
 		"status": "berhasil",
@@ -39,9 +58,9 @@ func Post_pasien(c *gin.Context) {
 	}
 	new := model.Pasien{
 		Nama:           post.Nama,
-		No_identitas:   post.No_identitas,
+		Nik:            post.Nik,
 		Alamat:         post.Alamat,
-		Gender:         post.Gender,
+		Jenis_kelamin:  post.Jenis_kelamin,
 		No_hp:          post.No_hp,
 		Tempat_lahir:   post.Tempat_lahir,
 		Tanggal_lahir:  post.Tanggal_lahir,

@@ -3,9 +3,9 @@ package model
 type Pasien struct {
 	Id             int    `json:"id"`
 	Nama           string `json:"nama"`
-	No_identitas   string `json:"no_identitas"`
+	Nik            string `json:"nik"`
 	Alamat         string `json:"alamat"`
-	Gender         string `json:"gender"`
+	Jenis_kelamin  string `json:"jenis_kelamin"`
 	No_hp          string `json:"no_hp"`
 	Tempat_lahir   string `json:"tempat_lahir"`
 	Tanggal_lahir  string `json:"tanggal_lahir"`
@@ -68,7 +68,8 @@ type Perawat struct {
 
 type User struct {
 	Id       int    `json:"id"`
+	Username string `json:"username"`
 	Email    string `json:"email"`
-	Level    string `json:"level"`
+	Level    int    `json:"level"`
 	Password string `json:"password"`
 }
