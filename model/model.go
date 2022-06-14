@@ -1,15 +1,14 @@
 package model
 
 type Pasien struct {
-	Id             int    `json:"id"`
-	Nama           string `json:"nama"`
-	Nik            string `json:"nik"`
-	Alamat         string `json:"alamat"`
-	Jenis_kelamin  string `json:"jenis_kelamin"`
-	No_hp          string `json:"no_hp"`
-	Tempat_lahir   string `json:"tempat_lahir"`
-	Tanggal_lahir  string `json:"tanggal_lahir"`
-	Id_rekam_medis int    `json:"id_rekam_medis"`
+	Id            int    `json:"id"`
+	Nama          string `json:"nama"`
+	Nik           string `json:"nik"`
+	Alamat        string `json:"alamat"`
+	Jenis_kelamin string `json:"jenis_kelamin"`
+	No_hp         string `json:"no_hp"`
+	Tempat_lahir  string `json:"tempat_lahir"`
+	Tanggal_lahir string `json:"tanggal_lahir"`
 }
 
 type Jadwal struct {

@@ -36,7 +36,7 @@ func Get_pasien(c *gin.Context) {
 	var get_pasien []get_pasien
 	db.Raw("SELECT id, nama, nik, alamat, jenis_kelamin FROM capstone.pasiens;").Scan(&get_pasien)
 	for i := 0; i < len(get_pasien); i++ {
-		var rekam_medis rekam_medis
+		var rekam_medis []rekam_medis
 		db.Where("id_pasien = ?", get_pasien[i].Id).Find(&rekam_medis)
 		db.Model(&get_pasien[i]).Update("Rekam_medis", rekam_medis)
 	}
@@ -57,14 +57,13 @@ func Post_pasien(c *gin.Context) {
 		return
 	}
 	new := model.Pasien{
-		Nama:           post.Nama,
-		Nik:            post.Nik,
-		Alamat:         post.Alamat,
-		Jenis_kelamin:  post.Jenis_kelamin,
-		No_hp:          post.No_hp,
-		Tempat_lahir:   post.Tempat_lahir,
-		Tanggal_lahir:  post.Tanggal_lahir,
-		Id_rekam_medis: post.Id_rekam_medis,
+		Nama:          post.Nama,
+		Nik:           post.Nik,
+		Alamat:        post.Alamat,
+		Jenis_kelamin: post.Jenis_kelamin,
+		No_hp:         post.No_hp,
+		Tempat_lahir:  post.Tempat_lahir,
+		Tanggal_lahir: post.Tanggal_lahir,
 	}
 	db.Create(&new)
 	c.JSON(200, gin.H{
